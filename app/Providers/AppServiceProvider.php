@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,5 +28,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('admin', function($user){
             return $user->role_id == User::ADMIN_ROLE_ID; //return true if admin
         });
+
+        if(config('app.env') === 'production') {
+            URL::forceScheme('http');
+        }
     }
 }
